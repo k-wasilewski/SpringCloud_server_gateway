@@ -18,9 +18,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER")
+                .withUser("user").password("{noop}password").roles("USER")
                 .and()
-                .withUser("admin").password("admin").roles("ADMIN");
+                .withUser("admin").password("{noop}admin").roles("ADMIN");
 
     }
 
@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/book-service/books").permitAll()
+                .antMatchers("/book-service/**").permitAll()
                 .antMatchers("/eureka/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .formLogin().and()
