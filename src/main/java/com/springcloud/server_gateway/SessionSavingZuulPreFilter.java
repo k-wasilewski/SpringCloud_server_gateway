@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpSession;
 
 @Component
@@ -26,9 +25,7 @@ public class SessionSavingZuulPreFilter
         HttpSession httpSession = context.getRequest().getSession();
         Session session = repository.findById(httpSession.getId());
 
-        context.addZuulRequestHeader(
-
-                "Cookie", "SESSION=" + httpSession.getId());
+        context.addZuulRequestHeader("Cookie", "SESSION=" + httpSession.getId());
 
         return null;
 

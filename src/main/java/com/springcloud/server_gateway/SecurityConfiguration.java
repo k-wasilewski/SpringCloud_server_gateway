@@ -1,19 +1,12 @@
 package com.springcloud.server_gateway;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @EnableWebSecurity
 @Configuration
@@ -32,7 +25,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/book-service/books").permitAll()
+                .antMatchers(HttpMethod.GET, "/book-service/books").permitAll()
+                .antMatchers(HttpMethod.GET, "/book-service/books/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/book-service/books").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/book-service/books/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/book-service/books/*").hasRole("ADMIN")
                 .antMatchers("/eureka/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .formLogin().usernameParameter("username").passwordParameter("password")
