@@ -25,12 +25,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/book-service/books/messages").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/book-service/books").permitAll()
                 .antMatchers(HttpMethod.GET, "/book-service/books/*").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/book-service/books").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/book-service/books").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/book-service/books/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/book-service/books/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/rating-service/ratings/messages").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/rating-service/ratings").permitAll()
                 .antMatchers(HttpMethod.GET, "/rating-service/ratings/*").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/rating-service/ratings").hasRole("ADMIN")
