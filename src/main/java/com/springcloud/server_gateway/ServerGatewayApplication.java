@@ -9,6 +9,7 @@ import org.springframework.cloud.deployer.spi.task.TaskLauncher;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.task.launcher.TaskLaunchRequest;
 import org.springframework.cloud.task.launcher.annotation.EnableTaskLauncher;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableBinding(Source.class)
 public class ServerGatewayApplication {
     @Autowired
-    private Source source;
+    private Sink sink;
 
     public static void main(String[] args) {
         SpringApplication.run(ServerGatewayApplication.class, args);
@@ -41,11 +42,11 @@ public class ServerGatewayApplication {
                         null,
                         null,
                         null,
-                        null);
+                        "task-launcher666");
 
         final GenericMessage<TaskLaunchRequest> genericMessage = new GenericMessage<>(request);
 
-        this.source.output().send(genericMessage);
+        this.sink.input().send(genericMessage);
     }
 
 }
