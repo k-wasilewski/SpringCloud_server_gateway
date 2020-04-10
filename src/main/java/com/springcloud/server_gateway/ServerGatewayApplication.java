@@ -38,11 +38,11 @@ public class ServerGatewayApplication {
 
         final TaskLaunchRequest request =
                 new TaskLaunchRequest(
-                        "maven://org.springframework.cloud.task.app:timestamp-task:jar:1.0.1.RELEASE",
+                        "maven://com.springcloud:task_db:jar:0.0.1-SNAPSHOT",
                         null,
                         null,
                         null,
-                        "task-launcher666");
+                        "task_db");
 
         final GenericMessage<TaskLaunchRequest> genericMessage = new GenericMessage<>(request);
 
