@@ -56,4 +56,17 @@ public class ServerGatewayApplication {
         return response.toString();
     }
 
+    @RequestMapping(path = "/rating-service-history", method = RequestMethod.GET)
+    public String initializeSCDFtask2() throws IOException {
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://localhost:9393/tasks/executions");
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("name", "wrapper-task_db2"));
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse response = client.execute(httpPost);
+        return response.toString();
+    }
+
 }
