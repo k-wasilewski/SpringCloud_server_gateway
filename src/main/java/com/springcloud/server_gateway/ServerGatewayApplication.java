@@ -44,29 +44,24 @@ public class ServerGatewayApplication {
     }
 
     @RequestMapping(path = "/book-service-history", method = RequestMethod.GET)
-    public String initializeSCDFtask() throws IOException {
-        CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://localhost:9393/tasks/executions");
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("name", "wrapper-task_db"));
-        httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-        CloseableHttpResponse response = client.execute(httpPost);
-        return response.toString();
+    public String exportBookServiceHistory() throws IOException {
+        return initializeSCDFtask("wrapper-task_db");
     }
 
     @RequestMapping(path = "/rating-service-history", method = RequestMethod.GET)
-    public String initializeSCDFtask2() throws IOException {
+    public String exportRatingServiceHistory() throws IOException {
+        return initializeSCDFtask("wrapper-task_db2");
+    }
+
+    private String initializeSCDFtask(String taskName) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://localhost:9393/tasks/executions");
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("name", "wrapper-task_db2"));
+        params.add(new BasicNameValuePair("name", taskName));
         httpPost.setEntity(new UrlEncodedFormEntity(params));
 
         CloseableHttpResponse response = client.execute(httpPost);
         return response.toString();
     }
-
 }
