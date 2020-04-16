@@ -36,35 +36,11 @@ import java.util.Map;
 @SpringBootApplication
 @EnableZuulProxy
 @EnableDiscoveryClient
-@EnableTaskLauncher
-@RestController("/task")
-@EnableBinding(Source.class)
+@RestController
 public class ServerGatewayApplication {
-    @Autowired
-    //private Sink sink;
-    private Source source;
 
     public static void main(String[] args) {
         SpringApplication.run(ServerGatewayApplication.class, args);
-    }
-
-    @RequestMapping(path = "/rabbitmq", method = RequestMethod.GET)
-    public void sendRequest() {
-        Map<String, String> prop = new HashMap<>();
-        prop.put("server.port", "0");
-
-        final TaskLaunchRequest request =
-                new TaskLaunchRequest(
-                        "maven://com.springcloud:task_db:0.0.1-SNAPSHOT",
-                        null,
-                        prop,
-                        null,
-                        "task_db");
-
-        final GenericMessage<TaskLaunchRequest> genericMessage = new GenericMessage<>(request);
-
-        //this.sink.input().send(genericMessage);
-        this.source.output().send(genericMessage);
     }
 
     @RequestMapping(path = "/book-service-history", method = RequestMethod.GET)
