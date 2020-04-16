@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableBinding(Source.class)
 public class ServerGatewayApplication {
     @Autowired
-    private Sink sink;
+    //private Sink sink;
+    private Source source;
 
     public static void main(String[] args) {
         SpringApplication.run(ServerGatewayApplication.class, args);
@@ -46,7 +47,8 @@ public class ServerGatewayApplication {
 
         final GenericMessage<TaskLaunchRequest> genericMessage = new GenericMessage<>(request);
 
-        this.sink.input().send(genericMessage);
+        //this.sink.input().send(genericMessage);
+        this.source.output().send(genericMessage);
     }
 
 }
