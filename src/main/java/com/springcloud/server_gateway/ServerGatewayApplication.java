@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableBinding(Source.class)
 public class ServerGatewayApplication {
     @Autowired
-    //private Sink sink;
-    private Source source;
+    private Sink sink;
+    //private Source source;
 
     public static void main(String[] args) {
         SpringApplication.run(ServerGatewayApplication.class, args);
@@ -39,7 +39,7 @@ public class ServerGatewayApplication {
 
         final TaskLaunchRequest request =
                 new TaskLaunchRequest(
-                        "maven://com.springcloud:task_db:jar:0.0.1-SNAPSHOT",
+                        "maven://com.springcloud:task_db:0.0.1-SNAPSHOT",
                         null,
                         null,
                         null,
@@ -47,8 +47,8 @@ public class ServerGatewayApplication {
 
         final GenericMessage<TaskLaunchRequest> genericMessage = new GenericMessage<>(request);
 
-        //this.sink.input().send(genericMessage);
-        this.source.output().send(genericMessage);
+        this.sink.input().send(genericMessage);
+        //this.source.output().send(genericMessage);
     }
 
 }
