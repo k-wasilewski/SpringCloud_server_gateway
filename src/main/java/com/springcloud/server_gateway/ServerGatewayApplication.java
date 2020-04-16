@@ -24,10 +24,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +52,14 @@ public class ServerGatewayApplication {
         return initializeSCDFtask("wrapper-task_db");
     }
 
+    @RequestMapping(path = "/book-service-dump", method = RequestMethod.POST,
+            consumes = {"multipart/form-data"})
+    public String importQuestion(@RequestParam("dump") MultipartFile multipart) {
+        write(multipart,
+                FileSystems.getDefault().getPath("/home/kuba/Desktop/projects/SpringCloud"));
+        return multipart.getOriginalFilename()+" successfully uploaded";
+    }
+
     @RequestMapping(path = "/rating-service-history", method = RequestMethod.GET)
     public String exportRatingServiceHistory() throws IOException {
         return initializeSCDFtask("wrapper-task_db2");
@@ -63,5 +75,14 @@ public class ServerGatewayApplication {
 
         CloseableHttpResponse response = client.execute(httpPost);
         return response.toString();
+    }
+
+    public String write(MultipartFile file, Path dir) {
+        Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
+
+        try (OutputStream os = Files.newOutputStream(filepath)) {
+            os.write(file.getBytes());
+        } catch (IOException ioe) {return "IOException at saving file";}
+        return filepath+" successfully saved";
     }
 }
