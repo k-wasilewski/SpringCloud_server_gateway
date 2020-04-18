@@ -52,12 +52,13 @@ public class ServerGatewayApplication {
         return initializeSCDFtask("wrapper-task_db");
     }
 
+    //curl -X POST -F dump=@/home/kuba/Desktop/mydump.txt http://localhost:8084/book-service-dump
     @RequestMapping(path = "/book-service-dump", method = RequestMethod.POST,
             consumes = {"multipart/form-data"})
-    public String importQuestion(@RequestParam("dump") MultipartFile multipart) {
+    public String importQuestion(@RequestParam("dump") MultipartFile multipart) throws IOException {
         write(multipart,
                 FileSystems.getDefault().getPath("/home/kuba/Desktop/projects/SpringCloud"));
-        return multipart.getOriginalFilename()+" successfully uploaded";
+        return initializeSCDFtask("wrapper-task_db3");
     }
 
     @RequestMapping(path = "/rating-service-history", method = RequestMethod.GET)
