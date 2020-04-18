@@ -51,31 +51,8 @@ public class ServerGatewayApplication {
     @RequestMapping(path = "/book-service-dump", method = RequestMethod.POST,
             consumes = {"multipart/form-data"})
     public String importQuestion(@RequestParam("dump") MultipartFile multipart) throws IOException {
-        File file = new File("/home/kuba/Desktop/projects/SpringCloud");
-        String[] directories = file.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File current, String name) {
-                return new File(current, name).isDirectory();
-            }
-        });
-        List<Integer> ints = new ArrayList<>();
-        int i=0;
-        for(String str:directories){
-            int parsedNo;
-            try {
-                parsedNo=Integer.parseInt(str.trim());
-                ints.add(parsedNo);
-            } catch (NumberFormatException nfe) {}
-            i++;
-        }
-        Collections.sort(ints, Collections.reverseOrder());
-
-        int newNumber=0;
-        if (!ints.isEmpty()) newNumber = ints.get(0)+1;
-        File newFolder = new File("/home/kuba/Desktop/projects/SpringCloud/"+newNumber);
-        newFolder.mkdirs();
         write(multipart,
-                FileSystems.getDefault().getPath("/home/kuba/Desktop/projects/SpringCloud/"+newNumber));
+                FileSystems.getDefault().getPath(newFolder()));
         return initializeSCDFtask("wrapper-task_db3");
     }
 
@@ -103,5 +80,33 @@ public class ServerGatewayApplication {
             os.write(file.getBytes());
         } catch (IOException ioe) {return "IOException at saving file";}
         return filepath+" successfully saved";
+    }
+
+    private String newFolder() {
+        File file = new File("/home/kuba/Desktop/projects/SpringCloud");
+        String[] directories = file.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
+            }
+        });
+        List<Integer> ints = new ArrayList<>();
+        int i=0;
+        for(String str:directories){
+            int parsedNo;
+            try {
+                parsedNo=Integer.parseInt(str.trim());
+                ints.add(parsedNo);
+            } catch (NumberFormatException nfe) {}
+            i++;
+        }
+        Collections.sort(ints, Collections.reverseOrder());
+
+        int newNumber=0;
+        if (!ints.isEmpty()) newNumber = ints.get(0)+1;
+        File newFolder = new File("/home/kuba/Desktop/projects/SpringCloud/"+newNumber);
+        newFolder.mkdirs();
+
+        return "/home/kuba/Desktop/projects/SpringCloud/"+newNumber;
     }
 }
