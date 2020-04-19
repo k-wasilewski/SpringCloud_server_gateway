@@ -25,8 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/upload-dump").permitAll()
-                .antMatchers(HttpMethod.GET, "/rating-service-history").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/upload-dump").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/book-service-history").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/book-service/books/messages").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/book-service/books/messages/*").hasRole("ADMIN")
@@ -36,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/book-service/books").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/book-service/books/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/book-service/books/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/rating-service-history").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/rating-service/ratings/messages").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/rating-service/ratings/messages/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/rating-service/ratings").permitAll()

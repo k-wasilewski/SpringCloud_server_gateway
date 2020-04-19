@@ -43,7 +43,7 @@ public class ServerGatewayApplication {
         SpringApplication.run(ServerGatewayApplication.class, args);
     }
 
-    //curl -X POST -F dump=@/home/kuba/Desktop/mydump.txt http://localhost:8084/book-service-dump
+    //curl -X POST -i -F dump=@/home/kuba/Desktop/mydump.sql http://localhost:8084/upload-dump
     @RequestMapping(path = "/upload-dump", method = RequestMethod.POST,
             consumes = {"multipart/form-data"})
     public String importQuestion(@RequestParam("dump") MultipartFile multipart) throws IOException {
