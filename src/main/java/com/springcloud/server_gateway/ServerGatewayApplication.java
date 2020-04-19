@@ -1,5 +1,6 @@
 package com.springcloud.server_gateway;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -51,6 +52,9 @@ public class ServerGatewayApplication {
     @RequestMapping(path = "/book-service-dump", method = RequestMethod.POST,
             consumes = {"multipart/form-data"})
     public String importQuestion(@RequestParam("dump") MultipartFile multipart) throws IOException {
+        if (!FilenameUtils.getExtension(multipart.getOriginalFilename()).equals("sql")) {
+            return "Filename extension must be .sql !";
+        }
         write(multipart,
                 FileSystems.getDefault().getPath(newFolder()));
         return initializeSCDFtask("wrapper-task_db3");
