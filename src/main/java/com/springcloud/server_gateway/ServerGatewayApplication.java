@@ -58,7 +58,7 @@ public class ServerGatewayApplication {
 
     private String initializeSCDFtask(String taskName) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://localhost:9393/tasks/executions");
+        HttpPost httpPost = new HttpPost("http://scdf:9393/tasks/executions");
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("name", taskName));
